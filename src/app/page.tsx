@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Calendar, Code, Brain, Rocket, Coffee, Moon, Camera, Twitter, Linkedin } from 'lucide-react';
+import {Code, Rocket, Coffee,Camera, Twitter, Linkedin } from 'lucide-react';
+
 
 export default function AayushPortfolio() {
   const [currentProject, setCurrentProject] = useState(0);
-  const [currentArticle, setCurrentArticle] = useState(0);
-  const [isVisible, setIsVisible] = useState({});
   const [showNoteDialog, setShowNoteDialog] = useState(false);
   const [showProfessionalDialog, setShowProfessionalDialog] = useState(false);
   const [noteMessage, setNoteMessage] = useState('');
@@ -97,22 +96,23 @@ export default function AayushPortfolio() {
     setShowProfessionalDialog(false);
   };
 
-  const handleSendNote = (e) => {
-    e.preventDefault();
-    if (noteMessage.trim() && noteName.trim()) {
-      // Here you would typically send the note to your backend
-      console.log('Note sent:', { name: noteName, email: noteEmail, message: noteMessage });
+  // const handleSendNote = (e) => {
+  //   e.preventDefault();
+  //   if (noteMessage.trim() && noteName.trim()) {
+  //     // Here you would typically send the note to your backend
+  //     console.log('Note sent:', { name: noteName, email: noteEmail, message: noteMessage });
       
-      // Reset form and close dialog
-      setNoteMessage('');
-      setNoteName('');
-      setNoteEmail('');
-      setShowNoteDialog(false);
+  //     // Reset form and close dialog
+  //     setNoteMessage('');
+  //     setNoteName('');
+  //     setNoteEmail('');
+  //     setShowNoteDialog(false);
       
-      // Show success feedback (you could add a toast notification here)
-      alert('Thanks for your note! I\'ll get back to you soon 🚀');
-    }
-  };
+  //     // Show success feedback (you could add a toast notification here)
+  //     alert("Thanks for your note! I'll get back to you soon 🚀");
+
+  //   }
+  // };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -492,7 +492,7 @@ export default function AayushPortfolio() {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3 pt-4">
+              {/* <div className="flex gap-3 pt-4">
                 <button
                   onClick={() => setShowNoteDialog(false)}
                   className="flex-1 px-6 py-3 border-2 border-slate-200 text-slate-600 font-semibold rounded-xl hover:border-slate-300 hover:bg-slate-50 transition-all"
@@ -507,7 +507,7 @@ export default function AayushPortfolio() {
                   <span>Send Note</span>
                   <span className="text-lg">🚀</span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
