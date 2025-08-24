@@ -261,8 +261,8 @@ export default function AayushPortfolio() {
               <span className="text-slate-600 ml-2">Enthusiast</span>
             </div>
             <div className="bg-white/70 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg">
-              <span className="text-orange-500 font-semibold">🚀 YC S25</span>
-              <span className="text-slate-600 ml-2">Applicant</span>
+              <span className="text-orange-500 font-semibold">Thinking</span>
+              <span className="text-slate-600 ml-2">up</span>
             </div>
           </div>
           
