@@ -2,6 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import {Code, Rocket, Coffee,Camera, Twitter, Linkedin } from 'lucide-react';
+import { createClient } from "@supabase/supabase-js";
+
+
+// Supabase client
+const supabaseUrl = "https://abtwmeanqfzlqypppdpe.supabase.co";
+const supabaseKey =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFidHdtZWFucWZ6bHF5cHBwZHBlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxNDc5NjEsImV4cCI6MjA2MzcyMzk2MX0.q3pePTO_-k93OcdeFFxPtl6sU5O7BFLEt-jz2vZmS6w";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 
 export default function AayushPortfolio() {
@@ -11,12 +19,69 @@ export default function AayushPortfolio() {
   const [noteMessage, setNoteMessage] = useState('');
   const [noteName, setNoteName] = useState('');
   const [noteEmail, setNoteEmail] = useState('');
+  const [reviews, setReviews] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showReviewDialog, setShowReviewDialog] = useState(false);
+
+
+  const [newReview, setNewReview] = useState("");
+  const [newName, setNewName] = useState("");
+  const [newWork, setNewWork] = useState("");
 
   // Debug: Log state changes
   useEffect(() => {
     console.log('showNoteDialog state changed:', showNoteDialog);
     console.log('showProfessionalDialog state changed:', showProfessionalDialog);
   }, [showNoteDialog, showProfessionalDialog]);
+
+  // Fetch reviews from Supabase
+  useEffect(() => {
+    const fetchReviews = async () => {
+    const { data, error } = await supabase.from("Reviews").select("*");
+    if (error) console.error(error);
+    else setReviews(data || []);
+    };
+    fetchReviews();
+    }, []);
+
+    const handlePrev = () => {
+      setCurrentIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
+    };
+  
+    const handleNext = () => {
+      setCurrentIndex((prev) => (prev + 1) % reviews.length);
+    };
+  
+    // Insert new review
+    const handleAddReview = async () => {
+      if (!newReview.trim() || !newName.trim() || !newWork.trim()) return;
+  
+      const { data, error } = await supabase.from("Reviews").insert([
+        {
+          review: newReview,
+          name: newName,
+          work: newWork,
+        },
+      ]);
+  
+      if (error) console.error(error);
+      else {
+        setReviews((prev) => [...prev, { review: newReview, name: newName, work: newWork }]);
+        setNewReview("");
+        setNewName("");
+        setNewWork("");
+        setShowReviewDialog(false);
+      }
+    };
+  
+    const visibleReviews = reviews.length
+      ? [
+          reviews[currentIndex],
+          ...(window.innerWidth >= 768 && reviews.length > 1
+            ? [reviews[(currentIndex + 1) % reviews.length]]
+            : []),
+        ]
+      : [];
 
   const projects = [
     {
@@ -170,7 +235,7 @@ export default function AayushPortfolio() {
               Self-taught <span className="text-orange-500 font-semibold">Programmer</span> and studing Data science from <span className="text-orange-500 font-semibold">IIT Madras</span>. 
               Currently deep-diving into <span className="text-orange-500 font-semibold">AI/ML</span>, building with 
               <span className="text-orange-500 font-semibold"> Full-stack AI development</span>, and dreaming of that 
-              <span className="text-orange-500 font-semibold"> Y Combinator</span> acceptance letter ✨
+              <span className="text-orange-500 font-semibold"> breakthrough</span> let's vibe ✨
             </p>
           </div>
 
@@ -223,7 +288,7 @@ export default function AayushPortfolio() {
             <span className="text-orange-500">Building</span>
           </h2>
           <p className="text-slate-600 text-center mb-16 max-w-2xl mx-auto">
-            From AI-powered platforms to mobile apps, here's what keeps me up at night (besides sleep, of course)
+            From <span className="text-orange-500">Black hole</span> to <span className="text-orange-500">AI</span> , here's what keeps me up at night (besides sleep, of course)
           </p>
 
           <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl">
@@ -277,6 +342,102 @@ export default function AayushPortfolio() {
           </div>
         </div>
       </section>
+
+            {/* Review Section */}
+            <section className="py-20 px-4 sm:px-8 lg:px-12">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-8">
+            <span className="text-slate-800">People</span>{" "}
+            <span className="text-orange-500">said</span>
+          </h2>
+
+          {visibleReviews.length > 0 ? (
+            <div className="flex items-center justify-center gap-4">
+              <button
+                onClick={handlePrev}
+                className="p-3 rounded-full bg-orange-100 hover:bg-orange-200"
+              >
+                ◀
+              </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+                {visibleReviews.map((rev, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center"
+                  >
+                    <p className="text-lg text-slate-700 italic mb-4">“{rev.review}”</p>
+                    <h4 className="font-bold text-orange-500">- {rev.name}</h4>
+                    <p className="text-slate-500 text-sm">for project {rev.work}</p>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={handleNext}
+                className="p-3 rounded-full bg-orange-100 hover:bg-orange-200"
+              >
+                ▶
+              </button>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <p className="text-lg text-slate-500">NO reviews yet</p>
+            </div>
+          )}
+
+          <div className="mt-8">
+            <button
+              onClick={() => setShowReviewDialog(true)}
+              className="bg-orange-500 text-white px-6 py-3 rounded-xl shadow hover:bg-orange-600"
+            >
+              Give Review
+            </button>
+          </div>
+        </div>
+      </section>
+
+                {/* Review Dialog */}
+      {showReviewDialog && (
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowReviewDialog(false);
+          }}
+        >
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+            <h3 className="text-xl font-bold mb-4 text-center">Leave a Review</h3>
+
+            <textarea
+              value={newReview}
+              onChange={(e) => setNewReview(e.target.value)}
+              placeholder="What you want to say?"
+              className="w-full p-3 border rounded-lg mb-3 text-black"
+            />
+
+            <input
+              type="text"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Your name"
+              className="w-full p-3 border rounded-lg mb-3 text-black"
+            />
+
+            <input
+              type="text"
+              value={newWork}
+              onChange={(e) => setNewWork(e.target.value)}
+              placeholder="What was your project?"
+              className="w-full p-3 border rounded-lg mb-3 text-black"
+            />
+
+            <button
+              onClick={handleAddReview}
+              className="w-full bg-orange-500 text-white py-3 rounded-xl hover:bg-orange-600"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
 {/* Contact Section */}
 <section className="py-20 px-4 sm:px-8 lg:px-12">
   <div className="max-w-2xl mx-auto text-center">
