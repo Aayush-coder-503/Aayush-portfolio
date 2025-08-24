@@ -11,6 +11,13 @@ const supabaseKey =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFidHdtZWFucWZ6bHF5cHBwZHBlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxNDc5NjEsImV4cCI6MjA2MzcyMzk2MX0.q3pePTO_-k93OcdeFFxPtl6sU5O7BFLEt-jz2vZmS6w";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+type Review = {
+  review: string;
+  name: string;
+  work: string;
+};
+
+
 
 export default function AayushPortfolio() {
   const [currentProject, setCurrentProject] = useState(0);
@@ -19,7 +26,7 @@ export default function AayushPortfolio() {
   const [noteMessage, setNoteMessage] = useState('');
   const [noteName, setNoteName] = useState('');
   const [noteEmail, setNoteEmail] = useState('');
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showReviewDialog, setShowReviewDialog] = useState(false);
 
@@ -37,12 +44,16 @@ export default function AayushPortfolio() {
   // Fetch reviews from Supabase
   useEffect(() => {
     const fetchReviews = async () => {
-    const { data, error } = await supabase.from("Reviews").select("*");
-    if (error) console.error(error);
-    else setReviews(data || []);
+      const { data, error } = await supabase.from("Reviews").select("*");
+      if (error) {
+        console.error(error);
+      } else {
+        setReviews((data as Review[]) || []);
+      }
     };
     fetchReviews();
-    }, []);
+  }, []);
+  
 
     const handlePrev = () => {
       setCurrentIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
