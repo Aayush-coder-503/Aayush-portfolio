@@ -208,7 +208,7 @@ export default function AayushPortfolio() {
 <div className="relative pt-8 pb-4">
   <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center shadow-xl overflow-hidden">
     <img 
-      src="https://abtwmeanqfzlqypppdpe.supabase.co/storage/v1/object/public/ci/WhatsApp%20Image%202025-08-24%20at%2015.22.30.jpeg"
+      src="https://abtwmeanqfzlqypppdpe.supabase.co/storage/v1/object/public/ci/WhatsApp%20Image%202025-08-25%20at%2015.52.40.jpeg"
       alt="Profile"
       className="w-full h-full object-cover"
     />
