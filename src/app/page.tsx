@@ -113,8 +113,8 @@ export default function AayushPortfolio() {
       title: "Closed insight",
       tech: "Nextjs • Supabase • LLM • Python",
       description: "Ai powered Ycombinator application analyser",
-      status: "In progress 📈",
-      link: null // no link yet
+      status: "Live waitlist 🚀",
+      link: "https://www.closedinsights.com/"
     }
   ];
   
@@ -253,7 +253,7 @@ export default function AayushPortfolio() {
           {/* Quick Stats */}
           <div className="flex flex-wrap justify-center gap-4 pt-6">
             <div className="bg-white/70 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg">
-              <span className="text-orange-500 font-semibold">Founded</span>
+              <span className="text-orange-500 font-semibold">Working on</span>
               <span className="text-slate-600 ml-2">Paainet</span>
             </div>
             <div className="bg-white/70 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg">
